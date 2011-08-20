@@ -64,6 +64,7 @@ sub start {
         if ($self->{keep_original}) {
             my %original;
             my @original = $u->query_form;
+            my $seen_guid = 0;
             while (my ($key, $val) = splice(@original, 0, 2)) {
                 if (exists $original{$key}) {
                     if (ref $original{$key} eq 'ARRAY') {
@@ -74,8 +75,9 @@ sub start {
                 } else {
                     $original{$key} = $val;
                 }
+                $seen_guid = 1 if exists $self->{param}->{guid} and $key eq 'guid' and $val eq $self->{param}->{guid};
             }
-            $u->query_form( %original, (exists $self->{param}->{guid} ? (guid => $self->{param}->{guid}) : ()) );
+            $u->query_form( %original, (exists $self->{param}->{guid} && !$seen_guid ? (guid => $self->{param}->{guid}) : ()) );
         } else {
             $u->query_form(%{$self->{param}});
         }

@@ -43,6 +43,15 @@ __END__
 </form>
 ===
 --- input filter chomp
+<form action="foo.cgi?guid=ON" method="post">
+<input name="bar" />
+</form>
+--- expected chomp
+<form action="foo.cgi?guid=ON" method="post">
+<input name="bar" />
+</form>
+===
+--- input filter chomp
 <form action="http://example.com/foo.cgi" method="post">
 <input name="bar">
 </form>
